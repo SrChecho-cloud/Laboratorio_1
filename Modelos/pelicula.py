@@ -1,5 +1,5 @@
 
-class PeliculaDVD:
+class pelicula:
 
     def __init__(self, id_pelicula, titulo, genero, anio):
         self.__id_pelicula = id_pelicula
