@@ -1,6 +1,8 @@
+
 from fpdf import FPDF
 from datetime import datetime
 import platform
+
 
 class Videoclub:
 
@@ -97,7 +99,6 @@ class Videoclub:
 
         raise ValueError("No existe un alquiler activo para esta pelicula")
 
-
     # Generar PDF
     def generar_pdf(self):
 
@@ -142,7 +143,9 @@ class Videoclub:
                     f"Estado: {estado}"
                 )
 
-                pdf.multi_cell(0, 8, texto)
+                pdf.set_x(pdf.l_margin)
+                pdf.multi_cell(pdf.epw, 8, texto)
+
         else:
             pdf.cell(0, 8, "No hay peliculas registradas.")
 
@@ -162,8 +165,9 @@ class Videoclub:
                 cliente = alquiler.get_cliente()
                 pelicula = alquiler.get_pelicula()
 
+                pdf.set_x(pdf.l_margin)
                 pdf.multi_cell(
-                    0,
+                    pdf.epw,
                     8,
                     f"Cliente: {cliente.get_nombre()} | "
                     f"Pelicula: {pelicula.get_titulo()} | "

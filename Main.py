@@ -43,7 +43,7 @@ while True:
             genero = input("Ingrese el genero de la pelicula: ")
             anio = int(input("Ingrese el año de la pelicula: "))
 
-            nueva_pelicula = pelicula(id_pelicula, titulo, genero, anio)
+            nueva_pelicula = ClassPelicula(id_pelicula, titulo, genero, anio)
             videoclub.agregar_pelicula(nueva_pelicula)
 
             print("Pelicula agregada correctamente")
