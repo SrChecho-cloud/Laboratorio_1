@@ -1,6 +1,6 @@
 from modelos.videoclub import Videoclub
 from modelos.cliente import Cliente
-from modelos.pelicula import pelicula
+from modelos.pelicula import pelicula as ClassPelicula
 from modelos.alquiler import Alquiler
 from modelos.devolucion import Devolucion
 

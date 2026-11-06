@@ -1,3 +1,6 @@
+from fpdf import FPDF
+from datetime import datetime
+import platform
 
 class Videoclub:
 
@@ -93,3 +96,85 @@ class Videoclub:
                 return True
 
         raise ValueError("No existe un alquiler activo para esta pelicula")
+
+
+    # Generar PDF
+    def generar_pdf(self):
+
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_auto_page_break(auto=True, margin=15)
+
+        # Titulo
+        pdf.set_font("Helvetica", "B", 18)
+        pdf.cell(0, 10, "BLOCKBUSTER", align="C")
+        pdf.ln(15)
+
+        # Informacion del sistema
+        pdf.set_font("Helvetica", "B", 14)
+        pdf.cell(0, 10, "Informacion del sistema")
+        pdf.ln(10)
+
+        pdf.set_font("Helvetica", size=11)
+        pdf.cell(0, 8, f"Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+        pdf.ln(8)
+        pdf.cell(0, 8, f"Sistema operativo: {platform.system()} {platform.release()}")
+        pdf.ln(8)
+        pdf.cell(0, 8, f"Clientes registrados: {len(self.__clientes)}")
+        pdf.ln(15)
+
+        # Catalogo de peliculas
+        pdf.set_font("Helvetica", "B", 14)
+        pdf.cell(0, 10, "Catalogo de peliculas")
+        pdf.ln(10)
+
+        pdf.set_font("Helvetica", size=11)
+
+        if self.__peliculas:
+            for pelicula in self.__peliculas:
+                estado = "Disponible" if pelicula.get_disponible() else "Alquilada"
+
+                texto = (
+                    f"ID: {pelicula.get_id_pelicula()} | "
+                    f"Titulo: {pelicula.get_titulo()} | "
+                    f"Genero: {pelicula.get_genero()} | "
+                    f"Anio: {pelicula.get_anio()} | "
+                    f"Estado: {estado}"
+                )
+
+                pdf.multi_cell(0, 8, texto)
+        else:
+            pdf.cell(0, 8, "No hay peliculas registradas.")
+
+        pdf.ln(10)
+
+        # Alquileres activos
+        pdf.set_font("Helvetica", "B", 14)
+        pdf.cell(0, 10, "Alquileres activos")
+        pdf.ln(10)
+
+        pdf.set_font("Helvetica", size=11)
+
+        alquileres_activos = 0
+
+        for alquiler in self.__alquileres:
+            if alquiler.get_activo():
+                cliente = alquiler.get_cliente()
+                pelicula = alquiler.get_pelicula()
+
+                pdf.multi_cell(
+                    0,
+                    8,
+                    f"Cliente: {cliente.get_nombre()} | "
+                    f"Pelicula: {pelicula.get_titulo()} | "
+                    f"Fecha: {alquiler.get_fecha_alquiler()}"
+                )
+
+                alquileres_activos += 1
+
+        if alquileres_activos == 0:
+            pdf.cell(0, 8, "No hay alquileres activos.")
+
+        pdf.output("reporte_videoclub.pdf")
+
+        print("PDF generado correctamente: reporte_videoclub.pdf")
