@@ -1,3 +1,4 @@
+
 # Entorno virtual
 venv/
 
@@ -12,3 +13,6 @@ __pycache__/
 # Archivos del sistema
 .DS_Store
 Thumbs.db
+
+# PDF generado
+reporte_videoclub.pdf
